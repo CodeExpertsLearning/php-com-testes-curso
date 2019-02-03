@@ -16,7 +16,7 @@ class ProdutoTest extends TestCase
 	public function testSeOPrecoDoProdutoESetadoCorretamente()
 	{
 		$produto = new Produto();
-		$produto->setPrice('19.9w9');
+		$produto->setPrice('19.99');
 
 		$this->assertEquals('19.99', $produto->getPrice(), 'Valores não são iguais!');
 	}

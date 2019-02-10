@@ -5,26 +5,53 @@ use PHPUnit\Framework\TestCase;
 
 class CarrinhoTest extends TestCase
 {
-	public function testSeClasseCarrinhoExiste()
+	private $carrinho;
+	private $produto;
+
+	public function setUp(): void
+	{
+		$this->carrinho = new Carrinho();
+		$this->produto = new Produto();
+	}
+
+	public function tearDown(): void
+	{
+		unset($this->carrinho);
+		unset($this->produto);
+	}
+
+//	public function testSeClasseCarrinhoExiste()
+//	{
+//		$classe = class_exists('\\Code\\Carrinho');
+//
+//		$this->assertTrue($classe);
+//	}
+
+	protected function assertPreConditions(): void
 	{
 		$classe = class_exists('\\Code\\Carrinho');
 
 		$this->assertTrue($classe);
 	}
 
+	protected function assertPostConditions(): void
+	{
+		//Executada sempre depois do teste e o método tearDown...
+	}
+
 	public function testAdicaoDeProdutosNoCarrinho()
 	{
-		$produto = new Produto();
+		$produto = $this->produto;
 		$produto->setName('Produto 1');
 		$produto->setPrice(19.99);
 		$produto->setSlug('produto-1');
 
-		$produto2 = new Produto();
+		$produto2 = $this->produto;
 		$produto2->setName('Produto 2');
 		$produto2->setPrice(19.99);
 		$produto2->setSlug('produto-2');
 
-		$carrinho = new Carrinho();
+		$carrinho = $this->carrinho;
 		$carrinho->addProduto($produto);
 		$carrinho->addProduto($produto2);
 
@@ -35,12 +62,12 @@ class CarrinhoTest extends TestCase
 
 	public function testSeValoresDeProdutosNoCarrinhoEstaoCorretosConformePassado()
 	{
-		$produto = new Produto();
+		$produto = $this->produto;
 		$produto->setName('Produto 1');
 		$produto->setPrice(19.99);
 		$produto->setSlug('produto-1');
 
-		$carrinho = new Carrinho();
+		$carrinho = $this->carrinho;
 		$carrinho->addProduto($produto);
 
 		$this->assertEquals('Produto 1', $carrinho->getProdutos()[0]->getName());
@@ -50,21 +77,39 @@ class CarrinhoTest extends TestCase
 
 	public function testSeTotalDeProdutosEValorDaCompraEstaoCorretos()
 	{
-		$produto = new Produto();
+		$produto = $this->produto;
 		$produto->setName('Produto 1');
 		$produto->setPrice(19.99);
 		$produto->setSlug('produto-1');
 
-		$produto2 = new Produto();
+		$produto2 = $this->produto;
 		$produto2->setName('Produto 2');
 		$produto2->setPrice(19.99);
 		$produto2->setSlug('produto-2');
 
-		$carrinho = new Carrinho();
+		$carrinho = $this->carrinho;
 		$carrinho->addProduto($produto);
 		$carrinho->addProduto($produto2);
 
 		$this->assertEquals(2, $carrinho->getTotalProdutos());
 		$this->assertEquals(39.98, $carrinho->getTotalCompra());
+	}
+
+	public function testIncompleto()
+	{
+		$this->assertTrue(true);
+		$this->markTestIncomplete('Teste não está completo!');
+	}
+
+	/**
+	 * @requires PHP == 5.3
+	 */
+	public function testSeFeatureEspecificaParaVersao53PHPTrabalhaDeFormaEsperada()
+	{
+//		if(PHP_VERSION != 5.3) {
+//			$this->markTestSkipped('Este teste só roda para versão abaixo do PHP 7');
+//		}
+
+		$this->assertTrue(true);
 	}
 }

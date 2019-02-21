@@ -62,13 +62,15 @@ class CarrinhoTest extends TestCase
 
 	public function testSeValoresDeProdutosNoCarrinhoEstaoCorretosConformePassado()
 	{
-		$produto = $this->produto;
-		$produto->setName('Produto 1');
-		$produto->setPrice(19.99);
-		$produto->setSlug('produto-1');
+//		$produto = $this->produto;
+//		$produto->setName('Produto 1');
+//		$produto->setPrice(19.99);
+//		$produto->setSlug('produto-1');
+
+		$produtoStub = $this->getStubProduto();
 
 		$carrinho = $this->carrinho;
-		$carrinho->addProduto($produto);
+		$carrinho->addProduto($produtoStub);
 
 		$this->assertEquals('Produto 1', $carrinho->getProdutos()[0]->getName());
 		$this->assertEquals(19.99, $carrinho->getProdutos()[0]->getPrice());
@@ -95,21 +97,46 @@ class CarrinhoTest extends TestCase
 		$this->assertEquals(39.98, $carrinho->getTotalCompra());
 	}
 
-	public function testIncompleto()
-	{
-		$this->assertTrue(true);
-		$this->markTestIncomplete('Teste não está completo!');
-	}
+//	public function testIncompleto()
+//	{
+//		$this->assertTrue(true);
+//		$this->markTestIncomplete('Teste não está completo!');
+//	}
 
-	/**
+	/*
 	 * @requires PHP == 5.3
 	 */
-	public function testSeFeatureEspecificaParaVersao53PHPTrabalhaDeFormaEsperada()
-	{
-//		if(PHP_VERSION != 5.3) {
-//			$this->markTestSkipped('Este teste só roda para versão abaixo do PHP 7');
-//		}
+//	public function testSeFeatureEspecificaParaVersao53PHPTrabalhaDeFormaEsperada()
+//	{
+////		if(PHP_VERSION != 5.3) {
+////			$this->markTestSkipped('Este teste só roda para versão abaixo do PHP 7');
+////		}
+//
+//		$this->assertTrue(true);
+//	}
 
-		$this->assertTrue(true);
+	public function testSeLogESalvoQuandoInformadoParaAADicaodeProduto()
+	{
+		$carrinho = new Carrinho();
+
+		$logMock = $this->getMockBuilder(Log::class)
+						->setMethods(['log'])
+						->getMock();
+
+		$logMock->expects($this->once())
+		        ->method('log')
+		        ->with($this->equalTo('Adicionando produto no carrinho'));
+
+		$carrinho->addProduto($this->getStubProduto(), $logMock);
+	}
+
+	private function getStubProduto()
+	{
+		$produtoStub = $this->createMock(Produto::class);
+		$produtoStub->method('getName')->willReturn('Produto 1');
+		$produtoStub->method('getPrice')->willReturn(19.99);
+		$produtoStub->method('getSlug')->willReturn('produto-1');
+
+		return $produtoStub;
 	}
 }

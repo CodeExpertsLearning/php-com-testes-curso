@@ -56,6 +56,15 @@ class Select
 		return $this;
 	}
 
+	public function select(...$fields)
+	{
+		$fields = implode(', ', $fields);
+
+		$this->query = str_replace('*', $fields, $this->query);
+
+		return $this;
+	}
+
 	public function getSql()
 	{
 		return $this->query . $this->join . $this->where . $this->orderBy . $this->limit;

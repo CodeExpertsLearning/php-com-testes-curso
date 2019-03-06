@@ -45,9 +45,9 @@ class Select
 		return $this;
 	}
 
-	public function join($joinType, $table, $foreignKey, $operator, $referenceColumn, $concat = 'AND')
+	public function join($joinType, $table, $foreignKey, $operator, $referenceColumn, $concat = false)
 	{
-		if(!$this->join) {
+		if(!$concat) {
 			$this->join .= ' ' . $joinType . ' ' . $table . ' ON ' . $foreignKey . ' ' . $operator . ' ' . $referenceColumn;
 		} else {
 			$this->join .= ' ' . $concat . ' ' . $foreignKey . ' ' . $operator . ' ' . $referenceColumn;

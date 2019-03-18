@@ -1,5 +1,5 @@
 <?php
-namespace Code\QueryBuilder;
+namespace Code\QueryBuilder\Query;
 
 class Select
 {

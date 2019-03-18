@@ -1,7 +1,7 @@
 <?php
-namespace CodeTests\QueryBuilder;
+namespace CodeTests\QueryBuilder\Query;
 
-use Code\QueryBuilder\Update;
+use Code\QueryBuilder\Query\Update;
 use PHPUnit\Framework\TestCase;
 
 

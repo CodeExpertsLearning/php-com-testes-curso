@@ -1,7 +1,7 @@
 <?php
-namespace CodeTests\QueryBuilder;
+namespace CodeTests\QueryBuilder\Query;
 
-use Code\QueryBuilder\Delete;
+use Code\QueryBuilder\Query\Delete;
 use PHPUnit\Framework\TestCase;
 
 class DeleteTest extends TestCase

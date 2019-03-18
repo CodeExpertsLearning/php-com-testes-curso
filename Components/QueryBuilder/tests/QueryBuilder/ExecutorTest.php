@@ -1,7 +1,12 @@
 <?php
 namespace CodeTests\QueryBuilder;
 
+use Code\QueryBuilder\Query\Delete;
+use Code\QueryBuilder\Query\Insert;
+use Code\QueryBuilder\Query\Select;
+use Code\QueryBuilder\Query\Update;
 use PHPUnit\Framework\TestCase;
+use Code\QueryBuilder\Executor;
 
 class ExecutorTest extends TestCase
 {
@@ -24,6 +29,21 @@ class ExecutorTest extends TestCase
 	public static function tearDownAfterClass(): void
 	{
 		self::$conn->exec('DROP TABLE products');
+	}
+
+	public function testIfQueryObjectAreReturnedWhenUseTheStaticMethodMagic()
+	{
+		$selectQueryObject = Executor::select('products');
+		$this->assertInstanceOf(Select::class, $selectQueryObject);
+
+		$selectQueryObject = Executor::insert('products', []);
+		$this->assertInstanceOf(Insert::class, $selectQueryObject);
+
+		$selectQueryObject = Executor::update('products', [], []);
+		$this->assertInstanceOf(Update::class, $selectQueryObject);
+
+		$selectQueryObject = Executor::delete('products', []);
+		$this->assertInstanceOf(Delete::class, $selectQueryObject);
 	}
 
 }

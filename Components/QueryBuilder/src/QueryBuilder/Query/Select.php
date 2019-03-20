@@ -1,7 +1,7 @@
 <?php
 namespace Code\QueryBuilder\Query;
 
-class Select
+class Select implements QueryInterface
 {
 	private $query;
 

@@ -2,7 +2,7 @@
 namespace Code\QueryBuilder\Query;
 
 
-class Update
+class Update implements QueryInterface
 {
 	private $sql;
 

@@ -3,12 +3,41 @@ namespace Code\Router;
 
 class Wildcard
 {
-	public function resolveRoute($route, &$routeCollection)
+	private $parameters = [];
+
+	public function resolveRoute($uri, &$routeCollection)
 	{
-		if($route == '/users/10') {
-			$routeCollection[$route] = function() {
-				return 'Rota com parâmetro!';
-			};
+		$keysRouteCollection = array_keys($routeCollection);
+		$routeWithParameters = [];
+
+		foreach($keysRouteCollection as $route) {
+			if(preg_match('/{(\w+?)\}/', $route)) {
+				$routeWithParameters[] = $route;
+			}
 		}
+
+		foreach($routeWithParameters as $route) {
+			$routeWithoutParameter = preg_replace('/\/{(\w+?)\}/', '', $route); // /users/{id} -> /users
+			$uriWithoutParameter   = preg_replace('/\/[0-9]+$/', '', $uri); // /users/10 -> /users
+
+			if($routeWithoutParameter === $uriWithoutParameter) {
+				$routeCollection[$uri] = $routeCollection[$route];
+				$this->parameters = $this->resolveParameter($uri);
+			}
+		}
+	}
+
+	public function getParameters()
+	{
+		return $this->parameters;
+	}
+
+	private function resolveParameter($uri)
+	{
+		$matches = [];
+
+		preg_match('/[0-9]+$/', $uri, $matches);
+
+		return $matches;
 	}
 }

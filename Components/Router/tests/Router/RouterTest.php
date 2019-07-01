@@ -79,12 +79,14 @@ class RouterTest extends TestCase
 
 		$router = new Router();
 
-		$router->addRoute('/users/{id}', function() {
-			return 'Rota com parâmetro!';
+		$router->addRoute('/users/{id}', function($id) {
+			return 'Rota com parâmetro & parâmetro é igual a ' . $id;
 		});
+
+		$router->addRoute('/products/{id}', '\\CodeTest\\Controller\\ProductController@index');
 
 		$result = $router->run();
 
-		$this->assertEquals('Rota com parâmetro!', $result);
+		$this->assertEquals('Rota com parâmetro & parâmetro é igual a 10', $result);
 	}
 }

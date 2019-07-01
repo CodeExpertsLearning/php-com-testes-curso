@@ -20,7 +20,8 @@ class Router
 	public function run()
 	{
 		//users/{id} <- funcao anonima
-		(new Wildcard())->resolveRoute($this->uriServer, $this->routeCollection);
+		$wildcard = new Wildcard();
+		$wildcard->resolveRoute($this->uriServer, $this->routeCollection);
 
 		if(!isset($this->routeCollection[$this->uriServer])) {
 			throw new \Exception('Route Not Found');
@@ -29,6 +30,12 @@ class Router
 		$route = $this->routeCollection[$this->uriServer];
 
 		if(is_callable($route)) {
+			$parameters = $wildcard->getParameters();
+
+			if(count($parameters)) {
+				return $route($parameters[0]);
+			}
+
 			return $route();
 		}
 
@@ -37,7 +44,7 @@ class Router
 		}
 	}
 
-	private function controllerResolver($route)
+	private function controllerResolver($route, $parameters = [])
 	{
 		if(!strpos($route, '@')) {
 			throw new \InvalidArgumentException('Wrong format to call a controller!');
@@ -49,6 +56,6 @@ class Router
 			throw new \Exception('Method does not exists!');
 		}
 
-		return call_user_func_array([new $controller, $method], []);
+		return call_user_func_array([new $controller, $method], $parameters);
 	}
 }

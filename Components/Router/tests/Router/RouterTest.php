@@ -89,4 +89,24 @@ class RouterTest extends TestCase
 
 		$this->assertEquals('Rota com parâmetro & parâmetro é igual a 10', $result);
 	}
+
+	public function testRouteWithPrefix()
+	{
+		$_SERVER['REQUEST_URI'] = '/users/edit/10';
+
+		$router = new Router();
+
+		$router->prefix('/users', function(Router $router){
+			$router->addRoute('/edit/{id}', function($id){
+				return 'Rota com prefixo e id ' . $id;
+			});
+			$router->addRoute('/update/{id}', function($id){
+				return 'Rota com update prefixo e id ' . $id;
+			});
+		});
+
+		$result = $router->run();
+
+		$this->assertEquals('Rota com prefixo e id 10', $result);
+	}
 }
